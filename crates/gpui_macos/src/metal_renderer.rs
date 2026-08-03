@@ -1214,7 +1214,8 @@ impl MetalRenderer {
         // stderr, not `log`: consumers (comet) run tracing without a log
         // bridge, and this line only exists when explicitly opted into.
         eprintln!(
-            "[gpu-stats] atlas: {} textures, {:.1} MB; instance pool: {} × {:.1} MB; backdrop scratch: {:.1} MB; path intermediate: {:.1} MB",
+            "[gpu-stats] device: {:.1} MB; atlas: {} textures, {:.1} MB; instance pool: {} × {:.1} MB; backdrop scratch: {:.1} MB; path intermediate: {:.1} MB",
+            self.device.current_allocated_size() as f64 / (1024.0 * 1024.0),
             atlas_textures,
             atlas_bytes as f64 / (1024.0 * 1024.0),
             pool_buffers,
