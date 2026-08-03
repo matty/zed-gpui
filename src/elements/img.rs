@@ -594,6 +594,30 @@ impl ImageSource {
             ImageSource::Image(data) => cx.has_asset::<AssetLogger<ImageDecoder>>(data),
         }
     }
+
+    /// Remove this image source from the asset system AND free the decoded
+    /// image's sprite-atlas tiles in every window. [`Self::remove_asset`]
+    /// alone leaks the tiles for `Image`/`Resource` sources: the decoded
+    /// `Arc<RenderImage>` lives inside the asset cache, so callers can't
+    /// reach [`App::drop_image`] themselves. Pass the window currently being
+    /// updated, if any — it is absent from `App::windows` during its own
+    /// update and would otherwise keep its tiles.
+    pub fn evict(&self, window: Option<&mut Window>, cx: &mut App) {
+        let render_image = match self {
+            ImageSource::Resource(resource) => cx
+                .peek_asset::<ImgResourceLoader>(resource)
+                .and_then(Result::ok),
+            ImageSource::Image(data) => cx
+                .peek_asset::<AssetLogger<ImageDecoder>>(data)
+                .and_then(Result::ok),
+            ImageSource::Render(data) => Some(data.clone()),
+            ImageSource::Custom(_) => None,
+        };
+        self.remove_asset(cx);
+        if let Some(image) = render_image {
+            cx.drop_image(image, window);
+        }
+    }
 }
 
 #[derive(Clone)]
