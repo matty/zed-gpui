@@ -1310,8 +1310,7 @@ vertex BackdropBlurVertexOutput backdrop_blur_vertex(
 fragment float4 backdrop_blur_fragment(
     BackdropBlurFragmentInput input [[stage_in]],
     constant BackdropBlur *blurs [[buffer(BackdropBlurInputIndex_Blurs)]],
-    constant Size_DevicePixels *viewport_size
-    [[buffer(BackdropBlurInputIndex_ViewportSize)]],
+    constant float4 &source_rect [[buffer(BackdropBlurInputIndex_SourceRect)]],
     texture2d<float> source_texture
     [[texture(BackdropBlurInputIndex_SourceTexture)]]) {
   constexpr sampler source_sampler(coord::normalized, address::clamp_to_edge,
@@ -1326,9 +1325,8 @@ fragment float4 backdrop_blur_fragment(
   }
 
   // The snapshot was gaussian-blurred on the GPU (MPSImageGaussianBlur)
-  // before this pass — one clean sample.
-  float2 viewport =
-      float2((float)viewport_size->width, (float)viewport_size->height);
-  float2 uv = input.position.xy / viewport;
+  // before this pass — one clean sample. The snapshot covers only
+  // source_rect (x, y, w, h) of the drawable, not the whole viewport.
+  float2 uv = (input.position.xy - source_rect.xy) / source_rect.zw;
   return source_texture.sample(source_sampler, uv);
 }
