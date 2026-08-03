@@ -2476,6 +2476,18 @@ impl App {
         self.loading_assets.remove(&asset_id);
     }
 
+    /// Returns the output of an asset load that has already completed,
+    /// without starting a load. `None` if the asset isn't cached or is still
+    /// loading.
+    pub fn peek_asset<A: Asset>(&self, source: &A::Source) -> Option<A::Output> {
+        let asset_id = (TypeId::of::<A>(), hash(source));
+        self.loading_assets
+            .get(&asset_id)?
+            .downcast_ref::<Shared<Task<A::Output>>>()?
+            .clone()
+            .now_or_never()
+    }
+
     /// Asynchronously load an asset, if the asset hasn't finished loading this will return None.
     ///
     /// Note that the multiple calls to this method will only result in one `Asset::load` call at a
