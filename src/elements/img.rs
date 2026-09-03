@@ -1,3 +1,4 @@
+// Modified for Mercury from gpui-pre 0.3.3 (Apache-2.0 §4(b) notice): ImageSource::evict.
 use crate::{
     AnyElement, AnyImageCache, App, Asset, AssetLogger, Bounds, DefiniteLength, Element, ElementId,
     Entity, GlobalElementId, Hitbox, Image, ImageCache, InspectorElementId, InteractiveElement,

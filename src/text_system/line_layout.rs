@@ -1,3 +1,4 @@
+// Modified for Mercury from gpui-pre 0.3.3 (Apache-2.0 §4(b) notice): the closing-punctuation wrap rule for shaped text.
 use crate::{FontId, GlyphId, Pixels, PlatformTextSystem, Point, SharedString, Size, point, px};
 use collections::FxHashMap;
 use parking_lot::{Mutex, RwLock, RwLockUpgradableReadGuard};

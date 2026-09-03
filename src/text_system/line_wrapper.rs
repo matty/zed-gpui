@@ -1,3 +1,4 @@
+// Modified for Mercury from gpui-pre 0.3.3 (Apache-2.0 §4(b) notice): the closing-punctuation wrap rule.
 use crate::{FontId, Pixels, SharedString, TextRun, TextSystem, px};
 use collections::HashMap;
 use std::{borrow::Cow, iter, sync::Arc};

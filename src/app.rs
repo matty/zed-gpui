@@ -1,3 +1,4 @@
+// Modified for Mercury from gpui-pre 0.3.3 (Apache-2.0 §4(b) notice): App::peek_asset.
 use scheduler::Instant;
 use std::{
     any::{TypeId, type_name},

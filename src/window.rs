@@ -1,3 +1,4 @@
+// Modified for Mercury from gpui-pre 0.3.3 (Apache-2.0 §4(b) notice): the EdgeFade primitive (both axes) and its per-primitive sampling.
 #[cfg(feature = "profiler")]
 use crate::DebugFrameOverlayMode;
 #[cfg(any(feature = "inspector", debug_assertions))]
